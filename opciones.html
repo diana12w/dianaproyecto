@@ -1,0 +1,80 @@
+<?php
+			 if(($_POST['username']==" ")&&($_POST['password']==" ")){
+				@header('location:loginError.php');
+			 }
+session_start();
+
+error_reporting(E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR);
+$dbhost="localhost";
+$username="root";
+$password=" ";
+$dbname="datos1";
+$conecta=mysql_connect($dbhost,$username,$password);
+mysql_select_db($dbname,$conecta)or die('nose puede abrir');
+if($_POST['username']){
+	$username=$_POST['username'];
+	$password=$_POST['password'];
+	if($password==NULL){
+		$msg="el passaword no fue enviado";
+	}
+	else{
+		$query=mysql_query("SELECT id_usuario, nombre, apellido_p, apellido_m, edad, sexo, correo,password FROM usuarios where correo='$username'") or die (mysql_error());
+		$data=mysql_fetch_array($query);
+		if($data['password']!=$password){
+			@header('location:loginError.php');
+		}
+		else{
+			$query=mysql_query("SELECT id_usuario, nombre, apellido_p, apellido_m, edad, sexo, correo,password FROM usuarios where correo='$username'") or die (mysql_error());
+			$row=mysql_fetch_array($query);
+			$_session["s_username"]=$row['correo'];
+			$_session["logeado"]="si";
+			?>
+			
+			
+<?php
+	require('conexion.php');
+	$query="SELECT id_usuario, nombre, apellido_p, apellido_m, edad, sexo, correo,password FROM usuarios where correo='$username'";
+	
+	
+	
+	
+
+?>
+
+<html>
+<head>
+<meta charset="utf-8">
+<title>suspiro enterprice</title>
+<link href="estilos.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="group">
+  <h2><em>SUSPIRO ENTERPRICE</em></h2>
+<br>
+<input class="form-btn" name="submit" type="submit" value="Salir" 
+</br>
+<center>OPCIONES</inicio>
+<center>
+<input class="form-btn" name="submit" type="submit" value="REIMPRESION DEL TICKET" 
+</center>
+<center>
+<input class="form-btn" name="submit" type="submit" value="DEVOLUCION DEL ARTICULO"
+</center>
+<center> 
+<input class="form-btn" name="submit" type="submit" value="ABASTO" 
+</center>
+
+     <center><h6><em>copyrigth@</em></h6></center>
+     
+    </p>
+  </form>
+</div>
+</body>
+
+</html>
+
+<?php
+		}
+	}
+}
+?>	
